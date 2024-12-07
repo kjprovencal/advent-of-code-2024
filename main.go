@@ -13,6 +13,7 @@ func main() {
 
 	funcMap := map[string]func(){
 		"1": day1,
+		"2": day2,
 	}
 
 	dayArg := os.Args[1]
