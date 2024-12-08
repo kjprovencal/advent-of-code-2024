@@ -22,9 +22,8 @@ func levelDirection(a string, b string) int {
 }
 
 // recursive func, 1 if chunk is valid/increasing, -1 if valid/decreasing, 0 if invalid
-func checkReport(report []string, withDampener bool) int {
+func checkReport(report []string, withDampener bool, dir int) int {
 	// assume each report has at least 2 levels
-	dir := 0
 	for i := 0; i < len(report)-1; i++ {
 		newDir := levelDirection(report[i], report[i+1])
 
@@ -52,13 +51,13 @@ func checkReport(report []string, withDampener bool) int {
 			}
 			fmt.Println("Report B:", reportB)
 
-			reportAStatus := checkReport(reportA, false)
+			reportAStatus := checkReport(reportA, false, dir)
 			if reportAStatus != 0 {
 				fmt.Println("Dampened report A:", reportA)
 				return reportAStatus
 			}
 
-			reportBStatus := checkReport(reportB, false)
+			reportBStatus := checkReport(reportB, false, dir)
 			if reportBStatus != 0 {
 				fmt.Println("Dampened report B:", reportB)
 				return reportBStatus
@@ -92,10 +91,12 @@ func day2() {
 		line := scanner.Text()
 		nums := regexp.MustCompile(`\s+`).Split(line, -1)
 
-		if checkReport(nums, false) != 0 {
+		if checkReport(nums, false, 0) != 0 {
 			safeCount++
 			dampenedCount++
-		} else if checkReport(nums, true) != 0 {
+		} else if checkReport(nums, true, 1) != 0 {
+			dampenedCount++
+		} else if checkReport(nums, true, -1) != 0 {
 			dampenedCount++
 		}
 	}
